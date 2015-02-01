@@ -74,12 +74,18 @@ int scaleLog(int &nJoy1,int nMaxValue = kMaximumPowerLevel)
 	return nScaled;
 }
 
-void TankDrive(int L, int R)
+void CarDrive(int xValue, int yValue)
 {
-	motor[motorRF] = scaleLog(R);
-	motor[motorRB] = scaleLog(R);
-	motor[motorLF] = scaleLog(L);
-	motor[motorLB] = scaleLog(L);
+		yValue = scaleLog (yValue);
+		xValue = scaleLog (xValue);
+
+		int FR = yValue;
+		int rotation = xValue*0.75;
+
+		motor [motorRF] = FR - rotation;
+		motor [motorRB] = FR - rotation;
+		motor [motorLF] = FR + rotation;
+		motor [motorLB] = FR + rotation;
 
 	return;
 }
@@ -138,7 +144,7 @@ task main()
 	{
 		getJoystickSettings(joystick);  // The joystick global is defined in joystick.c
 
-		TankDrive(joystick.joy1_y1, joystick.joy1_y2);
+		CarDrive(joystick.joy1_x1, joystick.joy1_y2);
 
 //////////////////////////////////////////////////////////////////////
 // Begining of driver One																						//
